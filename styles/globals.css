@@ -11,3 +11,36 @@ html, body, #__next {
   --secondary-deepblue: #0C2340;
   --tertiary-cream: #FFF2CC;
 }
+
+.country-box {
+  border: 2px solid var(--primary-copper);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.9);
+  padding: 10px;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+.country-box.highlight {
+  animation: pulseGlow 1s ease-in-out 0s 1;
+  box-shadow: 0 0 0 2px var(--primary-copper), 0 0 12px 2px rgba(184,120,69,0.6);
+  transform: scale(1.02);
+}
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(184,120,69,0.0); }
+  50% { box-shadow: 0 0 0 2px var(--primary-copper), 0 0 18px 4px rgba(184,120,69,0.7); }
+  100% { box-shadow: 0 0 0 2px var(--primary-copper), 0 0 12px 2px rgba(184,120,69,0.6); }
+}
+
+.avatar-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border: 1.5px solid var(--primary-copper);
+  border-radius: 999px;
+  color: var(--secondary-deepblue);
+  background: #fff;
+  cursor: grab;
+}
+.avatar-chip:active {
+  cursor: grabbing;
+}
