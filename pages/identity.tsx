@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-// 简化实现：两国区域（US、JP）+ 身份托盘（本人/配偶/子女/父母）
-// 目标：拖拽头像到国家区域，触发命中高亮动画与标签生成
-
 type AvatarId = 'self' | 'spouse' | 'child' | 'parent';
+
+type ModalAnswer = {
+  [key: string]: string | boolean;
+};
 
 const COUNTRIES = [
   { id: 'US', name: '美国 US', style: { left: '8%', top: '24%', width: '32%', height: '28%' } },
@@ -17,37 +18,93 @@ export default function Identity() {
   const [tags, setTags] = useState<string[]>([]);
   const [lastDrop, setLastDrop] = useState<string>('');
 
+  // 弹窗相关状态
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalCountry, setModalCountry] = useState<string>('');
+  const [modalAnswers, setModalAnswers] = useState<ModalAnswer>({});
+
   const onDragStart = (id: AvatarId) => setDragged(id);
   const onDragOver = (e: React.DragEvent<HTMLDivElement>) => e.preventDefault();
+
+  // 命中后打开国家逻辑弹窗
   const onDrop = (countryId: string) => {
     if (!dragged) return;
-    // 命中高亮动画
     setHighlight((h) => ({ ...h, [countryId]: true }));
     setLastDrop(`${dragged} → ${countryId}`);
-    // 生成示例标签（真实规则后端计算，这里先前端占位）
+    setDragged(null);
+    setModalCountry(countryId);
+    setModalAnswers({});
+    setModalOpen(true);
+  };
+
+  // US 问题序列（示例）
+  const US_QUESTIONS = [
+    { key: 'us_docs', label: '是否持有美国护照或绿卡？', type: 'boolean' },
+    { key: 'us_183', label: '过去三年加权居住是否满183天？', type: 'boolean' },
+    { key: 'us_exit', label: '是否计划放弃身份（脱籍）？', type: 'boolean' },
+  ];
+
+  // JP 问题序列（示例）
+  const JP_QUESTIONS = [
+    { key: 'jp_table2', label: '在留资格是否为永住/配偶/定住（Table 2）？', type: 'boolean' },
+    { key: 'jp_10y', label: '过去15年居住是否已满10年？', type: 'boolean' },
+  ];
+
+  const applyModal = () => {
     const newTags: string[] = [];
-    if (countryId === 'US') {
-      newTags.push('US_TAX_RESIDENT');
+    if (modalCountry === 'US') {
+      // 根据回答生成标签（示例映射）
+      if (modalAnswers['us_docs']) newTags.push('US_TAX_RESIDENT');
+      if (modalAnswers['us_183']) newTags.push('SUBSTANTIAL_PRESENCE_TEST');
+      if (modalAnswers['us_exit']) newTags.push('EXIT_TAX_EXPAT_RISK');
     }
-    if (countryId === 'JP') {
-      newTags.push('JP_RES_10Y');
+    if (modalCountry === 'JP') {
+      if (modalAnswers['jp_table2']) newTags.push('TABLE_2_VISA_HOLDER');
+      if (modalAnswers['jp_10y']) newTags.push('JP_RES_10Y');
     }
     setTags((prev) => Array.from(new Set([...prev, ...newTags])));
-    setDragged(null);
+    setModalOpen(false);
     // 2秒后移除高亮效果（保留标签）
-    setTimeout(() => setHighlight((h) => ({ ...h, [countryId]: false })), 2000);
+    setTimeout(() => setHighlight((h) => ({ ...h, [modalCountry]: false })), 2000);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setTimeout(() => setHighlight((h) => ({ ...h, [modalCountry]: false })), 200);
+  };
+
+  const renderQuestions = () => {
+    const list = modalCountry === 'US' ? US_QUESTIONS : JP_QUESTIONS;
+    return (
+      <div className="space-y-3">
+        {list.map((q) => (
+          <div key={q.key} className="flex items-center justify-between">
+            <span className="text-sm">{q.label}</span>
+            <div className="flex gap-2">
+              <button
+                className={`px-3 py-1 rounded border ${modalAnswers[q.key] === true ? 'bg-copper text-white' : 'bg-white border-copper text-deepblue'}`}
+                onClick={() => setModalAnswers((a) => ({ ...a, [q.key]: true }))}
+              >是</button>
+              <button
+                className={`px-3 py-1 rounded border ${modalAnswers[q.key] === false ? 'bg-copper text-white' : 'bg-white border-copper text-deepblue'}`}
+                onClick={() => setModalAnswers((a) => ({ ...a, [q.key]: false }))}
+              >否</button>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   };
 
   return (
     <main className="min-h-screen bg-cream text-deepblue p-8">
       <h2 className="text-2xl font-semibold mb-2">身份地图：拖拽头像到国家区域</h2>
-      <p className="mb-4 text-sm opacity-80">将下方头像拖拽到地图上的国家区域，会触发命中高亮与标签生成（示例：US_TAX_RESIDENT / JP_RES_10Y）。</p>
+      <p className="mb-4 text-sm opacity-80">拖拽头像到 US/JP 区域后，会弹出国家逻辑弹窗。根据选择实时生成风险标签（示例）。</p>
 
       <div className="grid grid-cols-3 gap-6">
         {/* 地图与国家区域 */}
         <div className="relative bg-white border border-copper rounded h-[440px] overflow-hidden">
           <div className="absolute inset-0 opacity-10 pointer-events-none" aria-hidden>
-            {/* 简化的背景栅格 */}
             <svg width="100%" height="100%">
               <defs>
                 <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
@@ -116,13 +173,27 @@ export default function Identity() {
             ))}
           </div>
           <div className="mt-4 text-xs opacity-70">
-            提示：拖拽头像到地图上的国家区域（US/JP）以查看高亮动画与标签生成效果。
+            提示：拖拽头像到地图上的国家区域（US/JP），根据弹窗回答生成标签。
           </div>
           <div className="mt-6">
             <Link href="/assets" className="px-4 py-2 rounded bg-copper text-white">下一步</Link>
           </div>
         </div>
       </div>
+
+      {/* 国家逻辑弹窗 */}
+      {modalOpen && (
+        <div className="modal-backdrop">
+          <div className="modal-card">
+            <div className="font-semibold mb-3">{modalCountry === 'US' ? '美国（US）逻辑问题' : '日本（JP）逻辑问题'}</div>
+            {renderQuestions()}
+            <div className="mt-6 flex justify-end gap-3">
+              <button className="px-4 py-2 rounded bg-gray-300 text-deepblue" onClick={closeModal}>取消</button>
+              <button className="px-4 py-2 rounded bg-copper text-white" onClick={applyModal}>应用并生成标签</button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
