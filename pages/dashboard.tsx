@@ -1,7 +1,5 @@
-import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 
-const echarts = dynamic(() => import('echarts'), { ssr: false });
 
 export default function Dashboard() {
   useEffect(() => {
