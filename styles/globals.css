@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #__next {
+  height: 100%;
+}
+
+:root {
+  --primary-copper: #B87845;
+  --secondary-deepblue: #0C2340;
+  --tertiary-cream: #FFF2CC;
+}
