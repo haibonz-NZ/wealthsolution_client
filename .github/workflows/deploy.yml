@@ -3,6 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -20,7 +21,7 @@ jobs:
         with:
           node-version: '20'
       - name: Install
-        run: npm ci
+        run: npm install
       - name: Build
         run: npm run build && npm run export && cp CNAME out/CNAME
       - name: Upload artifact
