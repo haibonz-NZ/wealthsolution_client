@@ -23,7 +23,7 @@ jobs:
       - name: Install
         run: npm install
       - name: Build
-        run: npm run build && npm run export && cp CNAME out/CNAME
+        run: npm run build && cp CNAME out/CNAME
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
