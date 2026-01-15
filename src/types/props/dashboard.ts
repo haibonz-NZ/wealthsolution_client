@@ -1,7 +1,7 @@
 // P06 Dashboard page component props
 // File: src/types/props/dashboard.ts
-import type { RiskItem } from '@/types/dto';
-import type { RadarSeries } from '@/types/common';
+import type { RiskItem } from '../dto';
+import type { RadarSeries } from '../common';
 
 export interface DashboardRadarProps {
   /** 雷达维度标签 (5 维: 税务/安全/传承/隐私/合规) */

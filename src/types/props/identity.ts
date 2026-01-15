@@ -1,7 +1,7 @@
 // P03 Identity page component props
 // File: src/types/props/identity.ts
 import type React from 'react';
-import type { DragEventSignature, DropEventSignature, TagItem, QuestionItem, AnswerMap } from '@/types/common';
+import type { DragEventSignature, DropEventSignature, TagItem, QuestionItem, AnswerMap } from '../common';
 
 export interface IdentityMapProps {
   /** 当前激活的国家代码列表，用于高亮显示 */
