@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
-import '../src/styles/identity.css';
+// 样式改为在 _app.tsx 全局引入，避免 Next 的“仅允许在 _app 导入全局 CSS”限制
 
 export default function Entry() {
   const [consent, setConsent] = useState(false);
