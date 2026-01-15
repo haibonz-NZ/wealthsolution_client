@@ -52,7 +52,7 @@ export const CountryLogicModal: React.FC<CountryLogicModalProps> = ({
                   onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })}
                 >
                   <option value="">请选择</option>
-                  {q.options?.map((opt) => (
+                  {q.options?.map((opt: string) => (
                     <option key={opt} value={opt}>{opt}</option>
                   ))}
                 </select>
