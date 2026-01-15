@@ -35,6 +35,30 @@ export default function IdentityPage() {
         { id: 'income_jp_ratio', text: '主要收入中日本来源占比？', type: 'select', options: ['>50%', '20%-50%', '<20%'] },
       ];
     }
+    if (country === 'UK') {
+      return [
+        { id: 'uk_resident', text: '是否为英国税务居民？', type: 'boolean' },
+        { id: 'days_in_uk', text: '过去 12 个月在英国居住天数？', type: 'select', options: ['>183 天', '90-183 天', '<90 天'] },
+        { id: 'income_uk_ratio', text: '主要收入中英国来源占比？', type: 'select', options: ['>50%', '20%-50%', '<20%'] },
+      ];
+    }
+    if (country === 'CA') {
+      return [
+        { id: 'ca_resident', text: '是否为加拿大税务居民？', type: 'boolean' },
+        { id: 'days_in_ca', text: '过去 12 个月在加拿大居住天数？', type: 'select', options: ['>183 天', '90-183 天', '<90 天'] },
+        { id: 'income_ca_ratio', text: '主要收入中加拿大来源占比？', type: 'select', options: ['>50%', '20%-50%', '<20%'] },
+      ];
+    }
+    if (country === 'AU') {
+      return [
+        { id: 'au_resident', text: '是否为澳大利亚税务居民？', type: 'boolean' },
+        { id: 'days_in_au', text: '过去 12 个月在澳大利亚居住天数？', type: 'select', options: ['>183 天', '90-183 天', '<90 天'] },
+        { id: 'income_au_ratio', text: '主要收入中澳大利亚来源占比？', type: 'select', options: ['>50%', '20%-50%', '<20%'] },
+      ];
+    }
+    if (country === 'UK') return ['uk_resident', 'days_in_uk', 'income_uk_ratio'];
+    if (country === 'CA') return ['ca_resident', 'days_in_ca', 'income_ca_ratio'];
+    if (country === 'AU') return ['au_resident', 'days_in_au', 'income_au_ratio'];
     return [];
   };
 
@@ -69,6 +93,36 @@ export default function IdentityPage() {
       else if (isBetween90And183(days) || incomeBetween20And50(income)) tags.push({ id: `jp_exposure_medium_${role}`, label: 'JP Exposure (Medium)', severity: 'medium' });
       else tags.push({ id: `jp_exposure_low_${role}`, label: 'JP Exposure (Low)', severity: 'low' });
     }
+    if (country === 'UK') {
+      const ukResident = answers['uk_resident'] === true;
+      const days = String(answers['days_in_uk'] || '');
+      const income = String(answers['income_uk_ratio'] || '');
+      if (ukResident) tags.push({ id: `uk_resident_${role}`, label: 'UK Resident', severity: 'medium' });
+      if (isOver183Days(days) || incomeOver50(income)) tags.push({ id: `uk_exposure_high_${role}`, label: 'UK Exposure (High)', severity: 'high' });
+      else if (isBetween90And183(days) || incomeBetween20And50(income)) tags.push({ id: `uk_exposure_medium_${role}`, label: 'UK Exposure (Medium)', severity: 'medium' });
+      else tags.push({ id: `uk_exposure_low_${role}`, label: 'UK Exposure (Low)', severity: 'low' });
+    }
+
+    if (country === 'CA') {
+      const caResident = answers['ca_resident'] === true;
+      const days = String(answers['days_in_ca'] || '');
+      const income = String(answers['income_ca_ratio'] || '');
+      if (caResident) tags.push({ id: `ca_resident_${role}`, label: 'CA Resident', severity: 'medium' });
+      if (isOver183Days(days) || incomeOver50(income)) tags.push({ id: `ca_exposure_high_${role}`, label: 'CA Exposure (High)', severity: 'high' });
+      else if (isBetween90And183(days) || incomeBetween20And50(income)) tags.push({ id: `ca_exposure_medium_${role}`, label: 'CA Exposure (Medium)', severity: 'medium' });
+      else tags.push({ id: `ca_exposure_low_${role}`, label: 'CA Exposure (Low)', severity: 'low' });
+    }
+
+    if (country === 'AU') {
+      const auResident = answers['au_resident'] === true;
+      const days = String(answers['days_in_au'] || '');
+      const income = String(answers['income_au_ratio'] || '');
+      if (auResident) tags.push({ id: `au_resident_${role}`, label: 'AU Resident', severity: 'medium' });
+      if (isOver183Days(days) || incomeOver50(income)) tags.push({ id: `au_exposure_high_${role}`, label: 'AU Exposure (High)', severity: 'high' });
+      else if (isBetween90And183(days) || incomeBetween20And50(income)) tags.push({ id: `au_exposure_medium_${role}`, label: 'AU Exposure (Medium)', severity: 'medium' });
+      else tags.push({ id: `au_exposure_low_${role}`, label: 'AU Exposure (Low)', severity: 'low' });
+    }
+
     return tags.filter((t, i, arr) => arr.findIndex(x => x.id === t.id) === i);
   };
 
