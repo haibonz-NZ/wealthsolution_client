@@ -1,6 +1,6 @@
 import React from 'react';
-import type { CountryLogicModalProps } from '@/types/props/identity';
-import '../styles/identity.css';
+import type { CountryLogicModalProps } from '../../types/props/identity';
+import '../../styles/identity.css';
 
 export const CountryLogicModal: React.FC<CountryLogicModalProps> = ({
   countryCode,

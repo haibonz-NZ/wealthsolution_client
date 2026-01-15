@@ -1,7 +1,7 @@
 import React from 'react';
-import type { IdentityMapProps } from '@/types/props/identity';
+import type { IdentityMapProps } from '../../types/props/identity';
 import { CountryBox } from './CountryBox';
-import '../styles/identity.css';
+import '../../styles/identity.css';
 
 export const IdentityMap: React.FC<IdentityMapProps> = ({
   activeCountryCodes,

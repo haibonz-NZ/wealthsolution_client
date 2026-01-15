@@ -1,6 +1,6 @@
 import React from 'react';
-import type { TagListProps } from '@/types/props/identity';
-import '../styles/identity.css';
+import type { TagListProps } from '../../types/props/identity';
+import '../../styles/identity.css';
 
 export const TagList: React.FC<TagListProps> = ({ tags, removable, onRemove, emptyText }) => {
   if (!tags?.length) {

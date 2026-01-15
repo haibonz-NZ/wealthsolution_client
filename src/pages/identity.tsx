@@ -1,10 +1,10 @@
 import React from 'react';
-import { IdentityMap } from '@/components/identity/IdentityMap';
-import { IdentityTray } from '@/components/identity/IdentityTray';
-import { CountryLogicModal } from '@/components/identity/CountryLogicModal';
-import { TagList } from '@/components/identity/TagList';
-import type { QuestionItem, TagItem } from '@/types/common';
-import type { RoleId, CountryCode } from '@/types/common';
+import { IdentityMap } from '../components/identity/IdentityMap';
+import { IdentityTray } from '../components/identity/IdentityTray';
+import { CountryLogicModal } from '../components/identity/CountryLogicModal';
+import { TagList } from '../components/identity/TagList';
+import type { QuestionItem, TagItem } from '../types/common';
+import type { RoleId, CountryCode } from '../types/common';
 import '../styles/identity.css';
 
 const buildQuestions = (country: CountryCode, role: RoleId): QuestionItem[] => {
