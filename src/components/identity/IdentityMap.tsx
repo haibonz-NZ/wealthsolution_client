@@ -1,6 +1,6 @@
 import React from 'react';
 import type { IdentityMapProps } from '../../types/props/identity';
-
+import '../../styles/identity.css';
 
 /**
  * IdentityMap (Dark+Gold): interactive world map canvas with droppable regions
@@ -81,6 +81,48 @@ export const IdentityMap: React.FC<IdentityMapProps> = ({
         <div className="country-box">
           <div className="country-title">日本 JP <span className="badge">可拖拽</span></div>
           <div className="country-hint">将身份头像拖拽到此区域以触发问答</div>
+        </div>
+      </div>
+
+      {/* UK region overlay (near Europe block) */}
+      <div
+        className={`country-region ${activeCountryCodes.includes('UK') ? 'active' : ''}`}
+        style={{ top: 150, left: 780, width: 140, height: 100 }}
+        onDrop={handleDrop('UK')}
+        role="region"
+        aria-label="英国 UK 区域"
+      >
+        <div className="country-box">
+          <div className="country-title">英国 UK <span className="badge">可拖拽</span></div>
+          <div className="country-hint">拖拽头像到此区域以触发问答</div>
+        </div>
+      </div>
+
+      {/* Canada region overlay (north of US) */}
+      <div
+        className={`country-region ${activeCountryCodes.includes('CA') ? 'active' : ''}`}
+        style={{ top: 80, left: 180, width: 240, height: 140 }}
+        onDrop={handleDrop('CA')}
+        role="region"
+        aria-label="加拿大 CA 区域"
+      >
+        <div className="country-box">
+          <div className="country-title">加拿大 CA <span className="badge">可拖拽</span></div>
+          <div className="country-hint">拖拽头像到此区域以触发问答</div>
+        </div>
+      </div>
+
+      {/* Australia region overlay */}
+      <div
+        className={`country-region ${activeCountryCodes.includes('AU') ? 'active' : ''}`}
+        style={{ top: 420, left: 1040, width: 200, height: 120 }}
+        onDrop={handleDrop('AU')}
+        role="region"
+        aria-label="澳大利亚 AU 区域"
+      >
+        <div className="country-box">
+          <div className="country-title">澳大利亚 AU <span className="badge">可拖拽</span></div>
+          <div className="country-hint">拖拽头像到此区域以触发问答</div>
         </div>
       </div>
     </div>
