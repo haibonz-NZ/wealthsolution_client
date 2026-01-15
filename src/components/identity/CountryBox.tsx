@@ -1,6 +1,6 @@
 import React from 'react';
 import type { CountryBoxProps } from '../../types/props/identity';
-import '../../styles/identity.css';
+
 
 export const CountryBox: React.FC<CountryBoxProps> = ({
   countryCode,

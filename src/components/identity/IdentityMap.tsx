@@ -1,6 +1,6 @@
 import React from 'react';
 import type { IdentityMapProps } from '../../types/props/identity';
-import '../../styles/identity.css';
+
 
 /**
  * IdentityMap (Dark+Gold): interactive world map canvas with droppable regions

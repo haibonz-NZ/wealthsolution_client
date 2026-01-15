@@ -1,6 +1,6 @@
 import React from 'react';
 import type { RoleId } from '../../types/common';
-import '../../styles/identity.css';
+
 
 interface IdentityTrayProps {
   roles?: RoleId[];
