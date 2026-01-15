@@ -56,9 +56,21 @@ export default function IdentityPage() {
         { id: 'income_au_ratio', text: '主要收入中澳大利亚来源占比？', type: 'select', options: ['>50%', '20%-50%', '<20%'] },
       ];
     }
-    if (country === 'UK') return ['uk_resident', 'days_in_uk', 'income_uk_ratio'];
-    if (country === 'CA') return ['ca_resident', 'days_in_ca', 'income_ca_ratio'];
-    if (country === 'AU') return ['au_resident', 'days_in_au', 'income_au_ratio'];
+    if (country === 'UK') return [
+      { id: 'uk_resident', text: '是否为英国税务居民？', type: 'boolean' },
+      { id: 'days_in_uk', text: '过去 12 个月在英国居住天数？', type: 'select', options: ['>183 天', '90-183 天', '<90 天'] },
+      { id: 'income_uk_ratio', text: '主要收入中英国来源占比？', type: 'select', options: ['>50%', '20%-50%', '<20%'] },
+    ];
+    if (country === 'CA') return [
+      { id: 'ca_resident', text: '是否为加拿大税务居民？', type: 'boolean' },
+      { id: 'days_in_ca', text: '过去 12 个月在加拿大居住天数？', type: 'select', options: ['>183 天', '90-183 天', '<90 天'] },
+      { id: 'income_ca_ratio', text: '主要收入中加拿大来源占比？', type: 'select', options: ['>50%', '20%-50%', '<20%'] },
+    ];
+    if (country === 'AU') return [
+      { id: 'au_resident', text: '是否为澳大利亚税务居民？', type: 'boolean' },
+      { id: 'days_in_au', text: '过去 12 个月在澳大利亚居住天数？', type: 'select', options: ['>183 天', '90-183 天', '<90 天'] },
+      { id: 'income_au_ratio', text: '主要收入中澳大利亚来源占比？', type: 'select', options: ['>50%', '20%-50%', '<20%'] },
+    ];
     return [];
   };
 
